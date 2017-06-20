@@ -66,10 +66,19 @@
             el.draggable(opts);
         } else {
             el.draggable(_.extend({}, this.grid.opts.draggable, {
-                containment: this.grid.opts.isNested ? this.grid.container.parent() : null,
+                containment: this.grid.opts.isNested && !this.grid.opts.outside ? this.grid.container.parent() : null,
                 start: opts.start || function() {},
                 stop: opts.stop || function() {},
                 drag: opts.drag || function() {}
+            }));
+            
+            var handles = el.data('gs-resize-handles') ? el.data('gs-resize-handles') : this.grid.opts.resizable.handles;
+            el.resizable(_.extend({}, this.grid.opts.resizable, {
+                handles: handles
+            }, {
+                start: opts.start || function () { },
+                stop: opts.stop || function () { },
+                resize: opts.resize || function () { }
             }));
         }
         return this;
